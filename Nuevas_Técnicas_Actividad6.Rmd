@@ -1,0 +1,43 @@
+---
+title: "Actividad 6"
+author: "Matías Martínez"
+date: "12 de abril de 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+####Ejercicio 2
+
+```{r,echo=FALSE}
+library(tidyverse)
+```
+
+1. 
+```{r}
+nrow(filter(mpg,year==2008 & hwy>31))
+
+```
+
+2.
+```{r}
+nrow(filter(mpg,cty==9 | hwy>90))
+```
+
+3.
+```{r}
+select(mpg,displ,hwy)
+```
+
+4.
+```{r}
+select(mpg,trans:hwy)
+```
+
+5.
+```{r}
+mutate(mpg,lxkm=hwy*(3.78541/1.60934))
+```
