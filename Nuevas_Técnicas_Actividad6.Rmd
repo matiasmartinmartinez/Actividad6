@@ -42,3 +42,29 @@ select(mpg,trans:hwy)
 ```{r}
 mutate(mpg,lxkm=hwy*(3.78541/1.60934))
 ```
+
+
+
+####Ejercicio 3
+
+
+```{r,echo =TRUE}
+library("productplots")
+```
+
+1.
+
+```{r,echo=TRUE}
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100))
+```
+
+2.
+```{r,echo=TRUE}
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100)) %>% ggplot(aes(x=year,y=porcent,colour=happy))+geom_point()+labs(x="Año",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad")+facet_wrap(~sex)+theme_bw()
+```
+
+3.
+
+Ambas 
+
+
