@@ -55,16 +55,41 @@ library("productplots")
 1.
 
 ```{r,echo=TRUE}
-filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>%arrange(year) %>% group_by(year) %>% mutate(porcent=(cont/sum(cont)*100))
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>%arrange(year) %>% group_by(year,sex) %>% mutate(porcent=(cont/sum(cont)*100))
 ```
 
 2.
 ```{r,echo=TRUE}
-filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>%arrange(year) %>% group_by(year) %>% mutate(porcent=(cont/sum(cont)*100)) %>% ggplot(aes(x=year,y=porcent,colour=happy))+geom_line()+labs(x="Año",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad")+facet_wrap(~sex)+theme_bw()
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>%arrange(year) %>% group_by(year,sex) %>% mutate(porcent=(cont/sum(cont)*100)) %>% ggplot(aes(x=year,y=porcent,colour=happy))+geom_line()+labs(x="Año",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad")+facet_wrap(~sex) + theme_bw()
 ```
 
 3.
 
-Ambas 
+Se denotan tendencias similares y estables en el tiempo para ambos géneros, no obstante, las mujeres gozan de proporciones más altas para los niveles de "muy feliz"" y "bastante feliz". 
+
+4.
+```{r,echo=TRUE}
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,age) %>% summarise(cont=n()) %>%arrange(age) %>% group_by(age,sex) %>% mutate(porcent=(cont/sum(cont)*100)) %>% ggplot(aes(x=age,y=porcent,colour=happy))+geom_line()+labs(x="Edad",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según edad")+facet_wrap(~sex) + theme_bw()
+```
+
+5.
 
 
+
+```{r,echo=FALSE}
+install.packages("ggmosaic")
+library(ggmosaic)
+
+```
+
+```{r,echo=TRUE}
+filter(happy,!is.na(happy)) %>% group_by(happy,marital) %>%  arrange(marital)%>% group_by(happy,marital) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100))%>% ggplot(aes(x=marital,y=porcent,colour=marital,fill=marital))+geom_mosaic(stat="identity",  position = "stack")+labs(x="Condición",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según relación matrimonial") + theme_bw()+facet_grid(~happy)+ theme(axis.text.x=element_blank())
+```
+
+
+
+Se podría considerar el uso de mosaicos.
+```{r,echo=FALSE}
+install.packages("ggmosaic")
+library(ggmosaic)
+```
