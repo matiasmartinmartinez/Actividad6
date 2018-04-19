@@ -81,6 +81,6 @@ library(ggmosaic)
 ```
 
 ```{r,echo=TRUE}
-filter(happy,!is.na(happy)) %>% group_by(happy,marital) %>%  arrange(marital)%>% group_by(marital,happy) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100))%>% ggplot()+ geom_mosaic(aes(x=marital,y=porcent,colour=happy,fill=happy),na.rm=TRUE,)+labs(x="Condición",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según relación matrimonial") + theme_bw()+ scale_x_productlist(labels=labels)
+filter(happy,!is.na(happy)) %>% group_by(happy,marital) %>%  arrange(marital)%>% group_by(marital,happy) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100))%>% ggplot()+ geom_mosaic(aes(weight=porcent,x=product(happy,marital),colour=happy,fill=happy),na.rm=TRUE,)+labs(x="Condición",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según relación matrimonial") + theme_bw()+ scale_x_productlist(labels=labels)
 ```
 
