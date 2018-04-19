@@ -69,27 +69,18 @@ Se denotan tendencias similares y estables en el tiempo para ambos géneros, no 
 
 4.
 ```{r,echo=TRUE}
-filter(happy,!is.na(happy)) %>% group_by(sex,happy,age) %>% summarise(cont=n()) %>%arrange(age) %>% group_by(age,sex) %>% mutate(porcent=(cont/sum(cont)*100)) %>% ggplot(aes(x=age,y=porcent,colour=happy))+geom_line()+labs(x="Edad",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según edad")+facet_wrap(~sex) + theme_bw()
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,age) %>% summarise(cont=n()) %>%arrange(age) %>% group_by(age,sex) %>% mutate(porcent=(cont/sum(cont)*100)) %>% ggplot(aes(x=age,y=porcent,colour=happy))+geom_point()+labs(x="Edad",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según edad")+facet_wrap(~sex) + theme_bw()
 ```
 
 5.
-
-
-
-```{r,echo=FALSE}
-install.packages("ggmosaic")
-library(ggmosaic)
-
-```
-
-```{r,echo=TRUE}
-filter(happy,!is.na(happy)) %>% group_by(happy,marital) %>%  arrange(marital)%>% group_by(happy,marital) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100))%>% ggplot(aes(x=marital,y=porcent,colour=marital,fill=marital))+geom_mosaic(stat="identity",  position = "stack")+labs(x="Condición",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según relación matrimonial") + theme_bw()+facet_grid(~happy)+ theme(axis.text.x=element_blank())
-```
-
-
 
 Se podría considerar el uso de mosaicos.
 ```{r,echo=FALSE}
 install.packages("ggmosaic")
 library(ggmosaic)
 ```
+
+```{r,echo=TRUE}
+filter(happy,!is.na(happy)) %>% group_by(happy,marital) %>%  arrange(marital)%>% group_by(marital,happy) %>% summarise(cont=n()) %>% mutate(porcent=(cont/sum(cont)*100))%>% ggplot()+ geom_mosaic(aes(x=marital,y=porcent,colour=happy,fill=happy),na.rm=TRUE,)+labs(x="Condición",y="Porcentaje",title="Gráfico de dispersión: Porcentaje niveles de felicidad según relación matrimonial") + theme_bw()+ scale_x_productlist(labels=labels)
+```
+
