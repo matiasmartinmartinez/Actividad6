@@ -100,3 +100,7 @@ happy %>% filter(!is.na(happy)) %>% group_by(happy,degree) %>%  arrange(degree) 
 
 
 
+
+
+
+
