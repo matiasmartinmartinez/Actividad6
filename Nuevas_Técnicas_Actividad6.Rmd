@@ -85,7 +85,7 @@ filter(happy,!is.na(happy)) %>% group_by(happy,marital) %>%  arrange(marital)%>%
 
 
 ```{r,echo=TRUE}
-filter(happy,!is.na(happy)) %>% group_by(happy,degree) %>%  arrange(degree)%>% group_by(degree,happy) %>% summarise(cont=n())%>%ggplot()+ geom_mosaic(aes(weight=cont,x=product(degree,happy),colour=degree,fill=degree),na.rm=TRUE,)+labs(x="Condición",y="Porcentaje",title="Gráfico de mosaicos: Porcentaje niveles de felicidad según condición financiera") + theme_minimal()+ scale_x_productlist(labels=labels)+scale_fill_brewer(palette="Dark2")
+filter(happy,!is.na(happy)) %>% group_by(happy,finrela) %>%  arrange(finrela)%>% group_by(finrela,happy) %>% summarise(cont=n())%>%ggplot()+ geom_mosaic(aes(weight=cont,x=product(happy,finrela),colour=happy,fill=happy),na.rm=TRUE,)+labs(x="Condición",y="Porcentaje",title="Gráfico de mosaicos: Porcentaje niveles de felicidad según condición financiera") + theme_minimal()+ scale_x_productlist(labels=labels)+scale_fill_brewer(palette="Blues")+coord_flip()
 ```
 
 
@@ -93,7 +93,7 @@ filter(happy,!is.na(happy)) %>% group_by(happy,degree) %>%  arrange(degree)%>% g
 6.
 
 ```{r,echo=TRUE}
-happy %>% filter(!is.na(happy)) %>% group_by(happy,degree) %>%  arrange(degree) %>% group_by(degree,happy) %>% summarise(cont=n()) %>% mutate(percent=(cont/sum(cont)*100))%>% drop_na(degree) %>% ggplot()+geom_bar(stat = "identity",aes(x=degree,y=percent,fill=happy,colour=happy))+coord_flip()
+happy %>% filter(!is.na(happy)) %>% group_by(happy,finrela) %>%  arrange(finrela)%>% group_by(finrela,happy) %>% summarise(cont=n())%>%ggplot()+ geom_mosaic(aes(weight=cont,x=product(happy,finrela),colour=happy,fill=happy),na.rm=TRUE,)+labs(x="Condición",y="Porcentaje",title="Gráfico de mosaicos: Niveles de felicidad según condición financiera") + theme_minimal()+ scale_x_productlist(labels=labels)+scale_fill_brewer(palette="Set1")+coord_flip()
 ```
 
 7.
