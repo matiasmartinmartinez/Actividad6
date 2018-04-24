@@ -119,6 +119,8 @@ happy %>% filter(!is.na(happy)) %>% group_by(happy,marital) %>% arrange(marital)
   theme_minimal(base_size=11) + guides(fill=guide_legend(title = "Felicidad", reverse = TRUE)) + scale_x_productlist(labels=labels) + coord_flip() + theme(plot.title = element_text(hjust = 0.5,colour="darkslategrey",size=13.7,face="plain")) + guides(fill=guide_legend(title="Felicidad")) + scale_fill_manual(values=c("firebrick3","seagreen3","royalblue4"))
 ```
 
+Las personas casadas ameas de ser casi un 50% de los encuestados, registran los porcentajes más altos para "muy feliz" y la menor proporcion para el nivel "no feliz".
+
 
 ```{r,echo=TRUE}
 
@@ -127,7 +129,7 @@ happy %>% filter(!is.na(happy)) %>% group_by(happy,finrela) %>%  arrange(finrela
   theme_minimal() + scale_x_productlist(labels=labels) + scale_fill_manual(values=c("firebrick3","seagreen3","royalblue4")) + coord_flip()+ guides(fill=guide_legend(title="Felicidad")) + guides(fill=guide_legend(title="Felicidad")) + theme(plot.title = element_text(hjust = 0.5,colour="darkslategrey",size=13.7,face="plain"))
 
 ```
-
+ A mejor condicion financiera, disminuye el porcentaje de personas no felices.
 
 
 6.
@@ -138,6 +140,7 @@ happy %>% filter(!is.na(happy)) %>% group_by(happy,degree) %>%  arrange(degree)%
   ggplot() + geom_mosaic(aes( weight=cont,x =product(happy,degree), colour=happy, fill=happy))+ labs( x="Escolaridad", y="Porcentaje",title="Gráfico de mosaicos: Niveles de felicidad según educación") + 
   theme_minimal() + scale_x_productlist(labels=labels) + scale_fill_manual(values=c("firebrick3","seagreen3","royalblue4")) + coord_flip() + guides(fill=guide_legend(title="Felicidad")) + theme(plot.title = element_text(hjust = 0.55,colour="grey20",size=14.2,face="plain"))
 ```
+La tendencia es clara, los encuestados con un grado educativo superior, presentan menor proporción de "no feliz".
 
 7.
 ```{r,echo=TRUE}
