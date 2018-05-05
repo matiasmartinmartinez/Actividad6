@@ -170,7 +170,7 @@ happy %>% filter(!is.na(happy)) %>% group_by(happy,marital) %>% arrange(marital)
 ```
 
 
-Las personas casadas ameas de ser casi un 50% de los encuestados, registran los porcentajes más altos para "muy feliz" y la menor proporcion para el nivel "no feliz".
+Las personas casadas se aproximan al 50% de los encuestados y registran los porcentajes más altos para "muy feliz" y la menor proporcion para el nivel "no feliz".
 
 
 ```{r,echo=TRUE}
