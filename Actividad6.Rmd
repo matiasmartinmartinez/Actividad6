@@ -1,0 +1,275 @@
+---
+title: "Actividad 6"
+author: "Matías Martínez"
+date: "25 de abril de 2018"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+####Ejercicio 2
+
+```{r,echo=FALSE}
+library(tidyverse)
+```
+
+<span style="color:green">Para eliminar los mensajes y warnings que aparecen cuando cargamos una librería hay que incluir en el chunk donde se cargan `warning =FALSE, message=FALSE`. De la misma forma en otros chunk donde se necesite o definirlo al inicio de la actividad para todos los chunks </span>
+
+
+1. 
+```{r}
+nrow(filter(mpg,year==2008 & hwy>31))
+
+```
+
+
+<span style="color:green">BIEN</span>
+
+
+
+2.
+```{r}
+nrow(filter(mpg,cty==9 | hwy>90))
+```
+<span style="color:green">BIEN</span>
+
+3.
+```{r}
+select(mpg,displ,hwy)
+```
+<span style="color:green">BIEN</span>
+
+
+4.
+```{r}
+select(mpg,trans:hwy)
+```
+
+<span style="color:green">BIEN</span>
+
+5.
+```{r}
+mutate(mpg,lxkm=hwy*(3.78541/1.60934))
+
+```
+
+<span style="color:green">Si mirás la media de tu nueva variable te da 55.1, es muy alto como rendimiento en km por litro. La cuenta que hay que hacer es
+mpg %>% mutate(hwylkm = (3.78541/1.60934)*100/hwy)</span>
+
+
+#####Ejercicio 3
+
+
+```{r,echo =TRUE}
+library("productplots")
+str(happy)
+```
+
+
+
+
+1.
+
+
+```{r,echo=TRUE}
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>%arrange(year) %>% group_by(year,sex) %>% mutate(percent=(cont/sum(cont)*100))
+```
+
+<span style="color:green">A su vez hay que tener cuidado con `group\_by` y saber cuando usamos summarise donde  suma 100\%. Ver solución. </span>
+
+
+
+
+2.
+```{r,echo=TRUE}
+
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,year) %>% summarise(cont=n()) %>% arrange(year) %>% group_by(year,sex) %>% mutate( percent=(cont/sum(cont)*100)) %>% 
+  ggplot(aes( x=year, y=percent, colour=happy))+
+  geom_point() + geom_smooth( method = 'loess') + 
+  labs(x="Año",y="Porcentaje",title="Gráfico de dispersión: Niveles de felicidad desde 1972 a 2006") +
+  facet_wrap(~sex) +
+  theme_bw(base_size = 12) + theme(plot.title = element_text(hjust = 0.5,colour="slateblue4",size=14,face="plain")) +
+  guides(fill=guide_legend(title="Felicidad")) + scale_fill_manual(values=c("firebrick3","seagreen3","royalblue4"))
+
+```
+
+
+<span style="color:green">Muy bien! podrías incluir directamente en el chunck `fig.cap = "Gráfico de dispersión: Niveles de felicidad....."` </span>
+
+
+
+3.
+
+```{r,echo=TRUE }
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,age) %>% summarise(cont=n()) %>%arrange(age) %>% group_by(age,sex) %>% mutate(percent=(cont/sum(cont)*100))  %>% 
+  ggplot(aes(x=sex, y=percent, fill=happy, clour=happy)) +
+  geom_boxplot() +
+  geom_jitter( alpha= 0.25, width = 0.20) +
+  labs( x="Sexo", y="Porcentaje", title= "Diagrama de caja: Niveles de felicidad en el tiempo según sexo",caption= "Nota: cada punto representa la proporción correspondiente a un año del período 1972 - 2006.") + 
+  facet_wrap( ~happy) +
+  theme_bw() + 
+  theme_bw( base_size = 12) +
+  theme( plot.title = element_text( hjust = 0.5, colour="slateblue4", size=14,face="plain")) +
+  guides( fill=FALSE) + 
+  scale_fill_manual( values=c("firebrick3","seagreen3","royalblue4"))
+
+```
+
+Se denotan tendencias similares y estables en el tiempo para ambos sexos en los distintos niveles, con altos porcentajes de individuos bastante felices (aprox. un 60%) y bajos para los no felices. No obstante, pese a una mayor dispersion para los hombres en los niveles de "muy feliz"" y "bastante feliz" principalmente, es apresurado concluir sin  nivel exploración de datos superior.
+
+<span style="color:green"> Muy bien!  </span>
+
+
+
+
+
+4.
+
+```{r,echo=TRUE}
+
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,age) %>% summarise(cont=n()) %>%arrange(age) %>% group_by(age,sex) %>% mutate(percent=(cont/sum(cont)*100))  %>% 
+  ggplot(aes( x=age, y=percent, fill=happy)) + 
+  geom_area() + 
+  labs( x="Edad",y="Porcentaje",title= "Gráfico de dispersión: Niveles de felicidad según edad") + 
+  facet_wrap( ~sex) +
+  theme_bw() + 
+  scale_fill_manual( values=c("slategray2","cyan3","royalblue4")) +
+  guides( fill=guide_legend( title="Felicidad")) +  theme( plot.title = element_text( hjust = 0.5, colour="darkslategray", size=14, face="plain"))
+
+```
+
+
+Se distingue a lo largo de los años estabilidad en la proporción de personas no felices, empero, el nivel "muy alto" en el sexo masculino crece incesantemente hasta acercarse a los 75 años y luego decrece con notoriedad. En las mujeres este recorrido es notoriamente leve y su decaimiento comieza al sobrepasar los 60 años.
+
+<span style="color:green"> Faltó cambiar el título, no es un graáfico de dispersión </span>
+
+
+```{r,echo =TRUE}
+
+filter(happy,!is.na(happy)) %>% group_by(sex,happy,age) %>% summarise( cont=n()) %>%arrange(age) %>% group_by(age,sex) %>% mutate(percent=(cont/sum(cont)*100)) %>% filter(happy== "very happy") %>%
+  ggplot(aes( x=age, y=percent, colour=sex , fill=sex)) +
+  geom_point() +
+  geom_smooth( method= "loess", se=FALSE) + 
+  labs( x="Edad", y ="Porcentaje", title= "Gráfico de dispersión con ajuste : Nivel muy feliz según edad") +
+  theme( plot.title = element_text(hjust = 0.5, colour="darkslategray", size=14,face="plain"))
+```
+
+
+
+<span style="color:green"> Muy bien! </span>
+
+
+5.
+
+Se considera adecuado el uso de mosaicos.
+
+```{r,echo=FALSE}
+
+library(ggmosaic)
+```
+
+```{r,echo=TRUE}
+
+happy %>% filter(!is.na(happy)) %>% group_by(happy,marital) %>% arrange(marital)%>% group_by(marital,happy) %>% summarise(cont=n()) %>%
+     ggplot() +
+  geom_mosaic(aes( weight=cont, x=product(happy,marital), colour=happy, fill=happy), na.rm=TRUE,) +
+  labs( x="Estado civil", y="Porcentaje", title="Gráfico de mosaicos: Porcentaje niveles de felicidad según estado civil") +
+  theme_minimal( base_size=11) +
+  guides( fill=guide_legend(title = "Felicidad", reverse = TRUE)) + scale_x_productlist( labels=labels) +
+  theme( plot.title = element_text( hjust = 0.5, colour="darkslategrey", size=13.7, face="plain"), axis.text.x = element_text(angle=90)) +
+  guides( fill=guide_legend( title="Felicidad")) +
+  scale_fill_manual( values=c("firebrick3","seagreen3","royalblue4")) 
+
+```
+
+
+
+Las personas casadas se aproximan al 50% de los encuestados y registran los porcentajes más altos para "muy feliz" y la menor proporcion para el nivel "no feliz".
+
+<span style="color:green"> Muy bien usar mosaicos, reomoví el `coord_flip()` y cambié la posicion del texto en el eje x. Como quiero explicar Felicidad tengo que leer la información condicionando en la variable explicativa que es estado civil.</span>
+
+
+
+```{r,echo=TRUE}
+
+happy %>% filter(!is.na(happy)) %>% group_by(happy,finrela) %>%  arrange(finrela)%>% group_by(finrela,happy) %>% summarise( cont=n()) %>%
+  ggplot() +
+  geom_mosaic(aes( weight=cont,x =product(happy,finrela), colour=happy, fill=happy)) + 
+  labs( x="Situación Financiera", y="Porcentaje",title="Gráfico de mosaicos: Niveles de felicidad según condición financiera") +
+  theme_minimal() +
+  scale_x_productlist( labels=labels) +
+  scale_fill_manual( values=c("firebrick3","seagreen3","royalblue4")) +
+  guides( fill=guide_legend( title="Felicidad")) +
+  guides( fill=guide_legend( title="Felicidad")) +
+  theme( plot.title = element_text(hjust = 0.5,colour="darkslategrey", size=13.7, face="plain"), axis.text.x = element_text(angle=90))
+
+```
+
+ A mejor condicion financiera, disminuye el porcentaje de personas no felices.
+
+
+<span style="color:green">  Reomoví el `coord_flip()` y cambié la posición del texto en el eje x </span>
+
+
+
+6.
+
+```{r,echo=TRUE}
+
+happy %>% filter(!is.na(happy)) %>% group_by(happy,degree) %>%  arrange(degree)%>% group_by(degree,happy) %>% summarise(cont=n()) %>%
+  ggplot() +
+  geom_mosaic(aes( weight=cont,x =product(happy,degree), colour=happy, fill=happy)) + 
+  labs( x="Escolaridad", y="Porcentaje", title="Gráfico de mosaicos: Niveles de felicidad según educación") +
+  theme_minimal() +
+  scale_x_productlist( labels=labels) +
+  scale_fill_manual(values=c("firebrick3","seagreen3","royalblue4")) +
+  guides(fill=guide_legend(title="Felicidad")) +
+  theme( plot.title = element_text(hjust = 0.55, colour="grey20", size=14.2, face="plain"), axis.text.x = element_text(angle=90))
+```
+
+La tendencia es clara, los encuestados con un grado educativo superior, presentan menor proporción de "no feliz".
+
+
+
+<span style="color:green">  Buen uso de los mosaic plots! me parece que quedan mejor con los cambios que agregué </span>
+
+7.
+
+```{r,echo=TRUE}
+
+levels(happy$health)
+
+
+happy %>% filter(!is.na(happy)) %>% group_by(happy,health) %>%  arrange(health) %>% group_by(health,happy) %>% summarise(cont=n()) %>%drop_na() %>%
+  ggplot() +
+  geom_mosaic(aes( weight=cont, x=product(happy,health), colour=happy, fill=happy)) +
+  labs( x="Salud", y="Porcentaje", title="Gráfico de mosaicos: Niveles de felicidad según salud") +
+  scale_fill_manual( values=c("firebrick3","seagreen3","royalblue4")) +
+  theme( plot.title = element_text( hjust = 0.4, colour="purple4", size=14.2, face="plain")) +
+  guides( fill=guide_legend(title="Felicidad"))
+
+
+```
+
+
+<span style="color:green"> Faltó el comentario</span>
+
+
+
+<span style="color:green"> Muy buen trabajo! tenés que ver las opciones de los chunks para eliminar warnings y messages así como la forma de incluir el título de los gráficos para usar referencias. PUNTOS 10/10</span>
+
+
+
+
+
+
+
+
+
+
+
